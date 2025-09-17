@@ -13,16 +13,17 @@ class Pages extends BaseController
         return view('welcome_message');
     }
 
-    public function view(string $pages = 'home'){
-            if(!is_file(APPPATH.'Views/pages/'.$pages.'.php')){
+    public function view(string $pages = 'home')
+    {
+            if (! is_file(APPPATH . 'Views/pages/' . $pages . '.php')) {
                 // we don't have a page for that!
                 throw new PageNotFoundException($pages);
             }
 
-            $data['title']=ucfirst($pages); // Capitalize the first letter
-            return view('templates/header',$data)
-                .view('pages/'.$pages)
-                .view('templates/footer');
+            $data['title'] = ucfirst($pages); // Capitalize the first letter
+            return view('templates/header', $data)
+                . view('pages/' . $pages)
+                . view('templates/footer');
 
     }
 }
