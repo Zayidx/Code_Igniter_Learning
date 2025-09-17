@@ -24,12 +24,13 @@ class Database extends Config
      *
      * @var array<string, mixed>
      */
+    // Keep a MySQL template (unused when defaultGroup is 'sqlite')
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => '127.0.0.1',
+        'username'     => 'root',
+        'password'     => 'root',
+        'database'     => 'ci4',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -45,6 +46,24 @@ class Database extends Config
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
+    // Active group for local dev to avoid MySQL access issues
+    public array $sqlite = [
+        'database'    => WRITEPATH . 'database' . DIRECTORY_SEPARATOR . 'ci4.sqlite',
+        'DBDriver'    => 'SQLite3',
+        'DBPrefix'    => '',
+        'DBDebug'     => true,
+        'swapPre'     => '',
+        'failover'    => [],
+        'foreignKeys' => true,
+        'busyTimeout' => 1000,
+        'synchronous' => null,
+        'dateFormat'  => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
@@ -198,6 +217,33 @@ class Database extends Config
         // we don't overwrite live data on accident.
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
+        }
+
+        // Override MySQL default connection with .env values when available
+        $this->default['DSN']          = env('database.default.DSN', $this->default['DSN']);
+        $this->default['hostname']     = env('database.default.hostname', $this->default['hostname']);
+        $this->default['username']     = env('database.default.username', $this->default['username']);
+        $this->default['password']     = env('database.default.password', $this->default['password']);
+        $this->default['database']     = env('database.default.database', $this->default['database']);
+        $this->default['DBDriver']     = env('database.default.DBDriver', $this->default['DBDriver']);
+        $this->default['DBPrefix']     = env('database.default.DBPrefix', $this->default['DBPrefix']);
+        $this->default['pConnect']     = env('database.default.pconnect', $this->default['pConnect']);
+        $this->default['DBDebug']      = env('database.default.DBDebug', $this->default['DBDebug']);
+        $this->default['charset']      = env('database.default.charset', $this->default['charset']);
+        $this->default['DBCollat']     = env('database.default.DBCollat', $this->default['DBCollat']);
+        $this->default['swapPre']      = env('database.default.swapPre', $this->default['swapPre']);
+        $this->default['encrypt']      = env('database.default.encrypt', $this->default['encrypt']);
+        $this->default['compress']     = env('database.default.compress', $this->default['compress']);
+        $this->default['strictOn']     = env('database.default.strictOn', $this->default['strictOn']);
+        $this->default['failover']     = env('database.default.failover', $this->default['failover']);
+        $portEnv = env('database.default.port', $this->default['port']);
+        $this->default['port'] = is_numeric($portEnv) ? (int) $portEnv : $this->default['port'];
+        $this->default['numberNative'] = env('database.default.numberNative', $this->default['numberNative']);
+        $this->default['foundRows']    = env('database.default.foundRows', $this->default['foundRows']);
+
+        // Ensure sqlite folder exists if that group is in use
+        if ($this->defaultGroup === 'sqlite' && ! is_dir(WRITEPATH . 'database')) {
+            @mkdir(WRITEPATH . 'database', 0775, true);
         }
     }
 }

@@ -37,7 +37,11 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "scripts": {
-        "test": "phpunit"
+  "scripts": {
+        "test": "phpunit",
+        "fresh-seed": [
+            "@php spark migrate:refresh -f",
+            "@php spark db:seed DatabaseSeeder"
+        ]
     }
 }
