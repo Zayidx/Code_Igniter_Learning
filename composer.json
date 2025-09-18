@@ -24,6 +24,10 @@
             "Config\\": "app/Config/"
         },
         "exclude-from-classmap": [
+            "app/Database/Migrations",
+            "app/Database/Migrations/**",
+            "app/Database/Seeds",
+            "app/Database/Seeds/**",
             "**/Database/Migrations/**"
         ]
     },

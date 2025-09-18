@@ -215,6 +215,17 @@ Seeders
 - Permissions: ensure `writable/` is writable by the web user.
 
 
+## Autoload & Migrations (PSR-4 note)
+CodeIgniter migration files are timestamp-prefixed, e.g. `2025-09-17-091930_CreateBooksTable.php` with class `CreateBooksTable` inside. Composer’s PSR-4 autoloader warns because the filename doesn’t match the class. This is expected: CodeIgniter locates migrations via its own locator, not Composer.
+
+- We exclude migrations/seeds from Composer classmap in `composer.json`:
+  - `autoload.exclude-from-classmap`: `app/Database/Migrations`, `app/Database/Migrations/**`, `app/Database/Seeds`, `app/Database/Seeds/**`, and `**/Database/Migrations/**`.
+- If you add new migrations/seeders and see similar warnings:
+  - Run: `composer dump-autoload -o`
+  - Ensure the exclude paths above are present.
+  - Verify timestamp format in `app/Config/Migrations.php` matches your filenames (`$timestampFormat`).
+
+
 ## Step-by-Step CRUD Tutorial (with code)
 This section shows how to build the Books CRUD from scratch. The repo already contains these files; use this as a learning reference.
 
@@ -480,4 +491,3 @@ $this->db->table('books')->insert([
 - Migrate: `php spark migrate`
 - Seed: `php spark db:seed BooksSeeder`
 - Laravel-like refresh + seed: `composer run fresh-seed`
-
