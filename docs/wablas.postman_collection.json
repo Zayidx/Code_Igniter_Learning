@@ -1,0 +1,95 @@
+{
+  "info": {
+    "name": "Wablas API Examples",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Contoh koleksi Postman untuk Wablas: teks, gambar, dokumen, template. Set variabel: base_url, token, secret, auth_prefix (kosong atau 'Bearer ')."
+  },
+  "item": [
+    {
+      "name": "Send Text",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "{{auth_prefix}}{{token}}" },
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "url": { "raw": "{{base_url}}/api/send-message", "host": ["{{base_url}}"], "path": ["api","send-message"] },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "phone",   "value": "628123456789" },
+            { "key": "message", "value": "Halo dari Postman" },
+            { "key": "secret",  "value": "{{secret}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Send Image",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "{{auth_prefix}}{{token}}" },
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "url": { "raw": "{{base_url}}/api/send-image", "host": ["{{base_url}}"], "path": ["api","send-image"] },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "phone",   "value": "628123456789" },
+            { "key": "image",   "value": "https://example.com/image.jpg" },
+            { "key": "caption", "value": "Gambar contoh" },
+            { "key": "secret",  "value": "{{secret}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Send Document",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "{{auth_prefix}}{{token}}" },
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "url": { "raw": "{{base_url}}/api/send-document", "host": ["{{base_url}}"], "path": ["api","send-document"] },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "phone",    "value": "628123456789" },
+            { "key": "document", "value": "https://example.com/file.pdf" },
+            { "key": "filename", "value": "file.pdf" },
+            { "key": "caption",  "value": "Dokumen contoh" },
+            { "key": "secret",   "value": "{{secret}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Send Template",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "{{auth_prefix}}{{token}}" },
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "url": { "raw": "{{base_url}}/api/send-template", "host": ["{{base_url}}"], "path": ["api","send-template"] },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "phone",    "value": "628123456789" },
+            { "key": "template", "value": "order_update" },
+            { "key": "data",     "value": "{\"1\":\"John\",\"2\":\"#1234\"}" },
+            { "key": "secret",   "value": "{{secret}}" }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url",    "value": "https://sby.wablas.com" },
+    { "key": "token",       "value": "CHANGE_ME" },
+    { "key": "secret",      "value": "" },
+    { "key": "auth_prefix", "value": "" }
+  ]
+}

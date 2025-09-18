@@ -3,6 +3,7 @@
 use CodeIgniter\Router\RouteCollection;
 use App\Controllers\Pages;
 use App\Controllers\Books;
+use App\Controllers\Whatsapp;
 /**
  * @var RouteCollection $routes
  */
@@ -18,6 +19,10 @@ $routes->get('books/(:num)/edit', [Books::class, 'edit/$1']);   // Form edit buk
 $routes->post('books/(:num)/update', [Books::class, 'update/$1']); // Update buku
 $routes->post('books/(:num)/delete', [Books::class, 'delete/$1']); // Hapus buku
 $routes->get('books/(:num)', [Books::class, 'show/$1']);   // Detail buku
+
+// WhatsApp via Wablas
+$routes->get('whatsapp', [Whatsapp::class, 'index']);
+$routes->post('whatsapp/send', [Whatsapp::class, 'send']);
 
 // Static pages (catch-all untuk halaman statis)
 $routes->get('home', [Pages::class, 'view']);
